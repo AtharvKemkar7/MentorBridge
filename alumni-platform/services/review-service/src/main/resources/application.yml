@@ -5,7 +5,7 @@ spring:
   application:
     name: review-service
   datasource:
-    url: jdbc:postgresql://localhost:5432/review_db
+    url: jdbc:postgresql://localhost:5438/review_db
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
@@ -20,6 +20,11 @@ spring:
     enabled: true
     locations: classpath:db/migration
     baseline-on-migrate: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          secret-key: "changeit_changeit_changeit_changeit"
 
 security:
   jwt:

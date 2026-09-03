@@ -5,7 +5,7 @@ spring:
   application:
     name: notification-service
   datasource:
-    url: jdbc:postgresql://localhost:5432/notification_db
+    url: jdbc:postgresql://localhost:5439/notification_db
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
@@ -41,6 +41,11 @@ spring:
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          secret-key: "changeit_changeit_changeit_changeit"
 
 security:
   jwt:
