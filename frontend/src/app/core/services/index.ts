@@ -6,3 +6,8 @@ export * from './session.service';
 export * from './review.service';
 export * from './notification.service';
 export * from './auth.service';
+export * from './admin.service';
+export * from './verification.service';
+export * from './category.service';
+export * from './audit-log.service';
+export * from './admin-user.service';

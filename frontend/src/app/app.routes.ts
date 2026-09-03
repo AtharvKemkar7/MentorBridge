@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
+import { AdminLayoutComponent } from './layout/admin-layout/admin-layout.component';
 import { LoginComponent } from './features/auth/login/login.component';
 import { RegisterComponent } from './features/auth/register/register.component';
 import { ForgotPasswordComponent } from './features/auth/forgot-password/forgot-password.component';
@@ -57,9 +58,18 @@ export const appRoutes: Routes = [
       // Admin area
       {
         path: 'admin',
+        component: AdminLayoutComponent,
         canActivate: [authGuard, () => roleGuard(['ADMIN'])],
         children: [
           { path: 'dashboard', loadComponent: () => import('./features/admin/dashboard/admin-dashboard.component').then(m => m.AdminDashboardComponent) },
+          { path: 'verifications', loadComponent: () => import('./features/admin/verifications/admin-verifications.component').then(m => m.AdminVerificationsComponent) },
+          { path: 'users', loadComponent: () => import('./features/admin/users/admin-users.component').then(m => m.AdminUsersComponent) },
+          { path: 'users/:id', loadComponent: () => import('./features/admin/users/admin-user-detail.component').then(m => m.AdminUserDetailComponent) },
+          { path: 'mentorship', loadComponent: () => import('./features/admin/mentorship/admin-mentorship.component').then(m => m.AdminMentorshipComponent) },
+          { path: 'categories', loadComponent: () => import('./features/admin/categories/admin-categories.component').then(m => m.AdminCategoriesComponent) },
+          { path: 'reviews', loadComponent: () => import('./features/admin/reviews/admin-reviews.component').then(m => m.AdminReviewsComponent) },
+          { path: 'audit-logs', loadComponent: () => import('./features/admin/audit-logs/admin-audit-logs.component').then(m => m.AdminAuditLogsComponent) },
+          { path: 'settings', loadComponent: () => import('./features/admin/settings/admin-settings.component').then(m => m.AdminSettingsComponent) },
           { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
         ]
       }
