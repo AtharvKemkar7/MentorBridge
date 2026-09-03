@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  review-db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: review_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5438:5432"
+    volumes:
+      - review-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  review-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8086:8086"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://review-db:5432/review_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      JWT_SECRET: changeit_changeit_changeit_changeit
+      BOOKING_SERVICE_URL: http://host.docker.internal:8085
+    depends_on:
+      review-db:
+        condition: service_healthy
+
+volumes:
+  review-db-data:
