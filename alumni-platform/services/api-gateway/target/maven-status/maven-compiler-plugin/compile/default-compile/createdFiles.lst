@@ -1,0 +1,3 @@
+com\alumni\platform\gateway\config\SecurityConfig.class
+com\alumni\platform\gateway\ApiGatewayApplication.class
+com\alumni\platform\gateway\filter\CorrelationIdFilter.class

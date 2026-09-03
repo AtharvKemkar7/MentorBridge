@@ -1,0 +1,74 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: identity-service
+          uri: ${IDENTITY_SERVICE_URL:http://localhost:8081}
+          predicates:
+            - Path=/api/auth/**
+          filters:
+            - StripPrefix=0
+        - id: profile-service
+          uri: ${PROFILE_SERVICE_URL:http://localhost:8082}
+          predicates:
+            - Path=/api/users/**,/api/students/**,/api/alumni/**
+          filters:
+            - StripPrefix=0
+        - id: institution-service
+          uri: ${INSTITUTION_SERVICE_URL:http://localhost:8083}
+          predicates:
+            - Path=/api/institute/**,/api/admin/**
+          filters:
+            - StripPrefix=0
+        - id: mentorship-service
+          uri: ${MENTORSHIP_SERVICE_URL:http://localhost:8084}
+          predicates:
+            - Path=/api/mentorship/**
+          filters:
+            - StripPrefix=0
+        - id: booking-service
+          uri: ${BOOKING_SERVICE_URL:http://localhost:8085}
+          predicates:
+            - Path=/api/bookings/**,/api/sessions/**
+          filters:
+            - StripPrefix=0
+        - id: review-service
+          uri: ${REVIEW_SERVICE_URL:http://localhost:8086}
+          predicates:
+            - Path=/api/reviews/**
+          filters:
+            - StripPrefix=0
+        - id: notification-service
+          uri: ${NOTIFICATION_SERVICE_URL:http://localhost:8087}
+          predicates:
+            - Path=/api/notifications/**,/api/notification-preferences/**
+          filters:
+            - StripPrefix=0
+
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: ${FRONTEND_ORIGIN:http://localhost:4200}
+            allowedMethods: GET,POST,PUT,DELETE,PATCH,OPTIONS
+            allowedHeaders: "*"
+            allowCredentials: true
+            maxAge: 3600
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    reactor.netty.http.client: DEBUG
