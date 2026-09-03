@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  institution-db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: institution_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5434:5432"
+    volumes:
+      - institution-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  institution-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8083:8083"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://institution-db:5432/institution_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      JWT_SECRET: changeit_changeit_changeit_changeit
+    depends_on:
+      institution-db:
+        condition: service_healthy
+
+volumes:
+  institution-db-data:
